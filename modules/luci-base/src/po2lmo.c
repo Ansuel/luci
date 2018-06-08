@@ -41,6 +41,7 @@ static int extract_string(const char *src, char *dest, int len)
 	int pos = 0;
 	int esc = 0;
 	int off = -1;
+	int add = 0;
 
 	for( pos = 0; (pos < strlen(src)) && (pos < len); pos++ )
 	{
@@ -59,21 +60,33 @@ static int extract_string(const char *src, char *dest, int len)
 					off++;
 					break;
 				}
-				dest[pos-off] = src[pos];
+				dest[pos-off+add] = src[pos];
 				esc = 0;
 			}
 			else if( src[pos] == '\\' )
 			{
-				dest[pos-off] = src[pos];
+				dest[pos-off+add] = src[pos];
 				esc = 1;
+			}
+			else if( (src[pos] == '\'') && ( src[pos-1] != '\\') )
+			{
+				dest[pos-off+add] = '\\';
+				add++;
+				dest[pos-off+add] = src[pos];
+			}
+			else if( (src[pos] == '"') && (src[pos-1] != '\\' ) &&( pos+3 < strlen(src) ) )
+			{
+				dest[pos-off+add] = '\\';
+				add++;
+				dest[pos-off+add] = src[pos];
 			}
 			else if( src[pos] != '"' )
 			{
-				dest[pos-off] = src[pos];
+				dest[pos-off+add] = src[pos];
 			}
 			else
 			{
-				dest[pos-off] = '\0';
+				dest[pos-off+add] = '\0';
 				break;
 			}
 		}
