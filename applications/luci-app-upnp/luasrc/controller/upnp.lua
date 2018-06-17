@@ -45,12 +45,26 @@ function act_status()
 						if uln then descr = uln:match(string.format("^%s:%d:%s:%d:%%d*:(.*)$", proto:upper(), extport, intaddr, intport)) end
 						if not descr then descr = "" end
 					end
+					
+					local dnsmasq_lease_file = io.open("/tmp/dhcp.leases", "r")
+		
+					local intaddr_resolved
+					
+					for line in dnsmasq_lease_file:lines() do
+						if line:match(".*" .. intaddr) then
+							intaddr_resolved = line:match(".*%s.*%s.*%s(.*)%s..:")
+							break
+						end
+					end
+					
+					dnsmasq_lease_file:close()
 
 					fwd[#fwd+1] = {
 						num     = num,
 						proto   = proto:upper(),
 						extport = extport,
 						intaddr = intaddr,
+						intaddr_resolved = intaddr_resolved or nil,
 						intport = intport,
 						descr = descr
 					}

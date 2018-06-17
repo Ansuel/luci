@@ -25,6 +25,7 @@
 						E('<div class="td">', st[i].proto),
 						E('<div class="td">', st[i].extport),
 						E('<div class="td">', st[i].intaddr),
+						E('<div class="td">', st[i].intaddr_resolved),
 						E('<div class="td">', st[i].intport),
 						E('<div class="td">', st[i].descr),
 						E('<input class="cbi-button cbi-input-remove" type="button" value="<%:Delete%>" onclick="upnp_delete_fwd(%d)" />'.format(st[i].num))
@@ -44,6 +45,7 @@
 			<div class="th cbi-section-table-cell"><%:Protocol%></div>
 			<div class="th cbi-section-table-cell"><%:External Port%></div>
 			<div class="th cbi-section-table-cell"><%:Client Address%></div>
+			<div class="th cbi-section-table-cell"><%:HostName%></div>
 			<div class="th cbi-section-table-cell"><%:Client Port%></div>
 			<div class="th cbi-section-table-cell"><%:Description%></div>
 			<div class="th cbi-section-table-cell">&#160;</div>
